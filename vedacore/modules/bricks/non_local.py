@@ -2,6 +2,7 @@ import torch
 import torch.nn as nn
 from abc import ABCMeta
 
+from vedacore.misc import registry
 from ..utils import constant_init, normal_init
 from .conv_module import ConvModule
 
@@ -156,6 +157,7 @@ class _NonLocalNd(nn.Module, metaclass=ABCMeta):
         return output
 
 
+@registry.register_module('enhance_module')
 class NonLocal1d(_NonLocalNd):
     """1D Non-local module.
 
@@ -171,7 +173,7 @@ class NonLocal1d(_NonLocalNd):
     def __init__(self,
                  in_channels,
                  sub_sample=False,
-                 conv_cfg=dict(type='Conv1d'),
+                 conv_cfg=dict(typename='Conv1d'),
                  **kwargs):
         super(NonLocal1d, self).__init__(
             in_channels, conv_cfg=conv_cfg, **kwargs)
@@ -184,6 +186,7 @@ class NonLocal1d(_NonLocalNd):
             self.phi = nn.Sequential(self.phi, max_pool_layer)
 
 
+@registry.register_module('enhance_module')
 class NonLocal2d(_NonLocalNd):
     """2D Non-local module.
 
@@ -199,7 +202,7 @@ class NonLocal2d(_NonLocalNd):
     def __init__(self,
                  in_channels,
                  sub_sample=False,
-                 conv_cfg=dict(type='Conv2d'),
+                 conv_cfg=dict(typename='Conv2d'),
                  **kwargs):
         super(NonLocal2d, self).__init__(
             in_channels, conv_cfg=conv_cfg, **kwargs)
@@ -212,6 +215,7 @@ class NonLocal2d(_NonLocalNd):
             self.phi = nn.Sequential(self.phi, max_pool_layer)
 
 
+@registry.register_module('enhance_module')
 class NonLocal3d(_NonLocalNd):
     """3D Non-local module.
 
@@ -227,7 +231,7 @@ class NonLocal3d(_NonLocalNd):
     def __init__(self,
                  in_channels,
                  sub_sample=False,
-                 conv_cfg=dict(type='Conv3d'),
+                 conv_cfg=dict(typename='Conv3d'),
                  **kwargs):
         super(NonLocal3d, self).__init__(
             in_channels, conv_cfg=conv_cfg, **kwargs)

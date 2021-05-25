@@ -8,11 +8,11 @@ from .norm import build_norm_layer, is_norm
 from .padding import build_padding_layer
 from .scale import Scale
 from .upsample import build_upsample_layer
+from .enhance_module import build_enhance_module
 
 __all__ = [
     'ConvModule', 'build_activation_layer', 'build_conv_layer',
     'build_norm_layer', 'build_padding_layer', 'build_upsample_layer',
     'is_norm', 'HSigmoid', 'HSwish', 'NonLocal1d', 'NonLocal2d', 'NonLocal3d',
-    'ACTIVATION_LAYERS', 'CONV_LAYERS', 'NORM_LAYERS', 'PADDING_LAYERS',
-    'UPSAMPLE_LAYERS', 'Scale'
+    'Scale', 'build_enhance_module'
 ]

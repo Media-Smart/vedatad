@@ -4,9 +4,10 @@ import torch.nn as nn
 import torch.utils.checkpoint as cp
 from torch.nn.modules.utils import _ntuple, _triple
 from torch.nn.modules.batchnorm import _BatchNorm
+from torch.nn.modules.conv import _ConvNd
 
-from vedacore.modules import (ConvModule, NonLocal3d, build_activation_layer,
-                              constant_init, kaiming_init)
+from vedacore.modules import (ConvModule, constant_init, kaiming_init,
+                              build_enhance_module, build_activation_layer)
 from vedacore.misc import registry
 
 
@@ -23,9 +24,9 @@ class BasicBlock3d(nn.Module):
             stride-two layer is the 3x3 conv layer, otherwise the stride-two
             layer is the first 1x1 conv layer. Default: 'pytorch'.
         inflate (bool): Whether to inflate kernel. Default: True.
-        non_local (bool): Determine whether to apply non-local module in this
+        enhance (bool): Determine whether to apply enhance module in this
             block. Default: False.
-        non_local_cfg (dict): Config for non-local module. Default: ``dict()``.
+        enhance_cfg (dict): Config for enhance module. Default: ``dict()``.
         conv_cfg (dict): Config dict for convolution layer.
             Default: ``dict(type='Conv3d')``.
         norm_cfg (dict): Config for norm layers. required keys are ``type``,
@@ -46,8 +47,8 @@ class BasicBlock3d(nn.Module):
                  downsample=None,
                  style='pytorch',
                  inflate=True,
-                 non_local=False,
-                 non_local_cfg=dict(),
+                 enhance=False,
+                 enhance_cfg=dict(),
                  conv_cfg=dict(typename='Conv3d'),
                  norm_cfg=dict(typename='BN3d'),
                  act_cfg=dict(typename='ReLU'),
@@ -69,8 +70,8 @@ class BasicBlock3d(nn.Module):
         self.norm_cfg = norm_cfg
         self.act_cfg = act_cfg
         self.with_cp = with_cp
-        self.non_local = non_local
-        self.non_local_cfg = non_local_cfg
+        self.enhance = enhance
+        self.enhance_cfg = enhance_cfg
 
         self.conv1_stride_s = spatial_stride
         self.conv2_stride_s = 1
@@ -114,9 +115,10 @@ class BasicBlock3d(nn.Module):
         self.downsample = downsample
         self.relu = build_activation_layer(self.act_cfg)
 
-        if self.non_local:
-            self.non_local_block = NonLocal3d(self.conv2.norm.num_features,
-                                              **self.non_local_cfg)
+        if self.enhance:
+            self.enhance_module = build_enhance_module(
+                self.enhance_cfg,
+                default_args=dict(in_channels=self.conv2.norm.num_features))
 
     def forward(self, x):
         """Defines the computation performed at every call."""
@@ -140,8 +142,8 @@ class BasicBlock3d(nn.Module):
             out = _inner_forward(x)
         out = self.relu(out)
 
-        if self.non_local:
-            out = self.non_local_block(out)
+        if self.enhance:
+            out = self.enhance_module(out)
 
         return out
 
@@ -162,9 +164,9 @@ class Bottleneck3d(nn.Module):
         inflate_style (str): ``3x1x1`` or ``3x3x3``. which determines the
             kernel sizes and padding strides for conv1 and conv2 in each block.
             Default: '3x1x1'.
-        non_local (bool): Determine whether to apply non-local module in this
+        enhance (bool): Determine whether to apply enhance module in this
             block. Default: False.
-        non_local_cfg (dict): Config for non-local module. Default: ``dict()``.
+        enhance_cfg (dict): Config for enhance module. Default: ``dict()``.
         conv_cfg (dict): Config dict for convolution layer.
             Default: ``dict(type='Conv3d')``.
         norm_cfg (dict): Config for norm layers. required keys are ``type``,
@@ -186,8 +188,8 @@ class Bottleneck3d(nn.Module):
                  style='pytorch',
                  inflate=True,
                  inflate_style='3x1x1',
-                 non_local=False,
-                 non_local_cfg=dict(),
+                 enhance=False,
+                 enhance_cfg=dict(),
                  conv_cfg=dict(type='Conv3d'),
                  norm_cfg=dict(type='BN3d'),
                  act_cfg=dict(type='ReLU'),
@@ -208,8 +210,8 @@ class Bottleneck3d(nn.Module):
         self.conv_cfg = conv_cfg
         self.act_cfg = act_cfg
         self.with_cp = with_cp
-        self.non_local = non_local
-        self.non_local_cfg = non_local_cfg
+        self.enhance = enhance
+        self.enhance_cfg = enhance_cfg
 
         if self.style == 'pytorch':
             self.conv1_stride_s = 1
@@ -274,9 +276,10 @@ class Bottleneck3d(nn.Module):
         self.downsample = downsample
         self.relu = build_activation_layer(self.act_cfg)
 
-        if self.non_local:
-            self.non_local_block = NonLocal3d(self.conv3.norm.num_features,
-                                              **self.non_local_cfg)
+        if self.enhance:
+            self.enhance_module = build_enhance_module(
+                self.enhance_cfg,
+                default_args=dict(in_channels=self.conv3.norm.num_features))
 
     def forward(self, x):
         """Defines the computation performed at every call."""
@@ -301,8 +304,8 @@ class Bottleneck3d(nn.Module):
             out = _inner_forward(x)
         out = self.relu(out)
 
-        if self.non_local:
-            out = self.non_local_block(out)
+        if self.enhance:
+            out = self.enhance_module(out)
 
         return out
 
@@ -352,9 +355,9 @@ class ResNet3d(nn.Module):
             running stats (mean and var). Default: False.
         with_cp (bool): Use checkpoint or not. Using checkpoint will save some
             memory while slowing down the training speed. Default: False.
-        non_local (Sequence[int]): Determine whether to apply non-local module
+        enhance (Sequence[int]): Determine whether to apply enhance module
             in the corresponding block of each stages. Default: (0, 0, 0, 0).
-        non_local_cfg (dict): Config for non-local module. Default: ``dict()``.
+        enhance_cfg (dict): Config for enhance module. Default: ``dict()``.
         zero_init_residual (bool):
             Whether to use zero initialization for residual block,
             Default: True.
@@ -391,8 +394,8 @@ class ResNet3d(nn.Module):
                  act_cfg=dict(typename='ReLU'),
                  norm_eval=False,
                  with_cp=False,
-                 non_local=(0, 0, 0, 0),
-                 non_local_cfg=dict(),
+                 enhance=(0, 0, 0, 0),
+                 enhance_cfg=dict(),
                  zero_init_residual=True,
                  **kwargs):
         super().__init__()
@@ -417,7 +420,7 @@ class ResNet3d(nn.Module):
         self.style = style
         self.frozen_stages = frozen_stages
         self.stage_inflations = _ntuple(num_stages)(inflate)
-        self.non_local_stages = _ntuple(num_stages)(non_local)
+        self.enhance_stages = _ntuple(num_stages)(enhance)
         self.inflate_style = inflate_style
         self.conv_cfg = conv_cfg
         self.norm_cfg = norm_cfg
@@ -430,7 +433,7 @@ class ResNet3d(nn.Module):
         self.stage_blocks = stage_blocks[:num_stages]
         self.inplanes = self.base_channels
 
-        self.non_local_cfg = non_local_cfg
+        self.enhance_cfg = enhance_cfg
 
         self._make_stem_layer()
 
@@ -452,8 +455,8 @@ class ResNet3d(nn.Module):
                 norm_cfg=self.norm_cfg,
                 conv_cfg=self.conv_cfg,
                 act_cfg=self.act_cfg,
-                non_local=self.non_local_stages[i],
-                non_local_cfg=self.non_local_cfg,
+                enhance=self.enhance_stages[i],
+                enhance_cfg=self.enhance_cfg,
                 inflate=self.stage_inflations[i],
                 inflate_style=self.inflate_style,
                 with_cp=with_cp,
@@ -477,8 +480,8 @@ class ResNet3d(nn.Module):
                        style='pytorch',
                        inflate=1,
                        inflate_style='3x1x1',
-                       non_local=0,
-                       non_local_cfg=dict(),
+                       enhance=0,
+                       enhance_cfg=dict(),
                        norm_cfg=None,
                        act_cfg=None,
                        conv_cfg=None,
@@ -506,10 +509,10 @@ class ResNet3d(nn.Module):
             inflate_style (str): ``3x1x1`` or ``1x1x1``. which determines
                 the kernel sizes and padding strides for conv1 and conv2
                 in each block. Default: '3x1x1'.
-            non_local (int | Sequence[int]): Determine whether to apply
-                non-local module in the corresponding block of each stages.
+            enhance (int | Sequence[int]): Determine whether to apply enhance
+                module in the corresponding block of each stages.
                 Default: 0.
-            non_local_cfg (dict): Config for non-local module.
+            enhance_cfg (dict): Config for enhance module.
                 Default: ``dict()``.
             conv_cfg (dict | None): Config for norm layers. Default: None.
             norm_cfg (dict | None): Config for norm layers. Default: None.
@@ -522,9 +525,9 @@ class ResNet3d(nn.Module):
         """
         inflate = inflate if not isinstance(inflate,
                                             int) else (inflate, ) * blocks
-        non_local = non_local if not isinstance(
-            non_local, int) else (non_local, ) * blocks
-        assert len(inflate) == blocks and len(non_local) == blocks
+        enhance = enhance if not isinstance(
+            enhance, int) else (enhance, ) * blocks
+        assert len(inflate) == blocks and len(enhance) == blocks
         downsample = None
         if spatial_stride != 1 or inplanes != planes * block.expansion:
             downsample = ConvModule(
@@ -548,8 +551,8 @@ class ResNet3d(nn.Module):
                 style=style,
                 inflate=(inflate[0] == 1),
                 inflate_style=inflate_style,
-                non_local=(non_local[0] == 1),
-                non_local_cfg=non_local_cfg,
+                enhance=(enhance[0] == 1),
+                enhance_cfg=enhance_cfg,
                 norm_cfg=norm_cfg,
                 conv_cfg=conv_cfg,
                 act_cfg=act_cfg,
@@ -567,8 +570,8 @@ class ResNet3d(nn.Module):
                     style=style,
                     inflate=(inflate[i] == 1),
                     inflate_style=inflate_style,
-                    non_local=(non_local[i] == 1),
-                    non_local_cfg=non_local_cfg,
+                    enhance=(enhance[i] == 1),
+                    enhance_cfg=enhance_cfg,
                     norm_cfg=norm_cfg,
                     conv_cfg=conv_cfg,
                     act_cfg=act_cfg,
@@ -615,7 +618,7 @@ class ResNet3d(nn.Module):
         """Initiate the parameters in backbone
         """
         for m in self.modules():
-            if isinstance(m, nn.Conv3d):
+            if isinstance(m, _ConvNd):
                 kaiming_init(m)
             elif isinstance(m, _BatchNorm):
                 constant_init(m, 1)
