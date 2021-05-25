@@ -1,6 +1,7 @@
 # adapted from https://github.com/open-mmlab/mmcv
 import copy
 import inspect
+
 import torch
 
 from vedacore.misc import build_from_cfg, registry

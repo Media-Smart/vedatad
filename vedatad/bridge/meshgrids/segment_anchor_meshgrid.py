@@ -21,6 +21,7 @@ class SegmentAnchorMeshGrid(BaseMeshGrid):
                         dtype=torch.float,
                         device='cuda'):
         """Get anchors according to feature map sizes.
+
         Args:
             featmap_tsizes (list[int]): Multi-level feature map temporal sizes.
             video_metas (list[dict]): Video meta info.
@@ -50,6 +51,7 @@ class SegmentAnchorMeshGrid(BaseMeshGrid):
 
     def _gen_anchor_mesh(self, featmap_tsizes, dtype, device):
         """Get points according to feature map sizes.
+
         Args:
             featmap_tsizes (list[int]): Multi-level feature map temporal sizes.
             dtype (torch.dtype): Type of points.

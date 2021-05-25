@@ -1,8 +1,9 @@
 # adapted from https://github.com/open-mmlab/mmcv or
 # https://github.com/open-mmlab/mmdetection
-import numpy as np
-import os.path as osp
 import glob
+import os.path as osp
+
+import numpy as np
 
 import vedacore.fileio as fileio
 import vedacore.image as image
@@ -182,8 +183,7 @@ class LoadAnnotations(object):
 
 @registry.register_module('pipeline')
 class Time2Frame(object):
-    """Switch time point to frame index.
-    """
+    """Switch time point to frame index."""
 
     def __call__(self, results):
         """Call function to switch time point to frame index.

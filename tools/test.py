@@ -3,7 +3,7 @@ import argparse
 import torch
 
 from vedacore.fileio import dump
-from vedacore.misc import Config, ProgressBar, load_weights, DictAction
+from vedacore.misc import Config, DictAction, ProgressBar, load_weights
 from vedacore.parallel import MMDataParallel
 from vedatad.datasets import build_dataloader, build_dataset
 from vedatad.engines import build_engine

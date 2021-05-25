@@ -1,5 +1,3 @@
-import torch.nn as nn
-
 from vedacore.misc import build_from_cfg, registry
 
 

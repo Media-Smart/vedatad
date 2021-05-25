@@ -25,7 +25,8 @@ class SpatialRandomFlip(object):
     def __init__(self, flip_ratio=None, direction='horizontal'):
         self.flip_ratio = flip_ratio
         self.direction = direction
-        if flip_ratio is not None: assert 0 <= flip_ratio <= 1
+        if flip_ratio is not None:
+            assert 0 <= flip_ratio <= 1
         assert direction in ['horizontal', 'vertical']
 
     def __call__(self, results):
@@ -239,9 +240,9 @@ class SpatialCenterCrop(object):
 
 @registry.register_module('pipeline')
 class PhotoMetricDistortion(object):
-    """Apply photometric distortion to images sequentially, every transformation
-    is applied with a probability of 0.5. The position of random contrast is in
-    second or second to last.
+    """Apply photometric distortion to images sequentially, every
+    transformation is applied with a probability of 0.5. The position of random
+    contrast is in second or second to last.
 
     1. random brightness
     2. random contrast (mode 0)
@@ -498,8 +499,7 @@ class Rotate(object):
 
 @registry.register_module('pipeline')
 class TemporalCrop(object):
-    """Temporally crop.
-    """
+    """Temporally crop."""
 
     def __init__(self):
         self.segment2label = dict(

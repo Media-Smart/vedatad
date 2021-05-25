@@ -1,10 +1,11 @@
 # Copyright (c) Open-MMLab. All rights reserved.
-import cv2
 import io
-import numpy as np
 import os.path as osp
-from cv2 import IMREAD_COLOR, IMREAD_GRAYSCALE, IMREAD_UNCHANGED
 from pathlib import Path
+
+import cv2
+import numpy as np
+from cv2 import IMREAD_COLOR, IMREAD_GRAYSCALE, IMREAD_UNCHANGED
 
 from vedacore.misc import check_file_exist, is_str, mkdir_or_exist
 
@@ -69,7 +70,7 @@ def _jpegflag(flag='color', channel_order='bgr'):
 
 
 def _pillow2array(img, flag='color', channel_order='bgr'):
-    """Convert a pillow image to numpy array
+    """Convert a pillow image to numpy array.
 
     Args:
         img (:obj:`PIL.Image.Image`): The image loaded using PIL
@@ -214,7 +215,7 @@ def imfrombytes(content, flag='color', channel_order='bgr', backend=None):
 
 
 def imwrite(img, file_path, params=None, auto_mkdir=True):
-    """Write image to file
+    """Write image to file.
 
     Args:
         img (ndarray): Image array to be written.

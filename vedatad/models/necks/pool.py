@@ -1,6 +1,6 @@
 import torch.nn as nn
 
-from vedacore.misc import registry, build_from_module
+from vedacore.misc import build_from_module, registry
 
 
 @registry.register_module('neck')

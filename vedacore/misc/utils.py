@@ -1,13 +1,14 @@
 # adapted from https://github.com/open-mmlab/mmcv or
 # https://github.com/open-mmlab/mmdetection
-import numpy as np
 import os
 import os.path as osp
 import random
-import torch
-import torch.distributed as dist
 from collections import abc
 from functools import partial
+
+import numpy as np
+import torch
+import torch.distributed as dist
 
 
 def multi_apply(func, *args, **kwargs):

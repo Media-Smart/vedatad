@@ -23,11 +23,12 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-import numpy as np
 import sys
+from functools import partial
+
+import numpy as np
 import torch
 import torch.nn as nn
-from functools import partial
 
 
 def get_model_complexity_info(model,
@@ -351,8 +352,8 @@ def start_flops_count(self):
     """Activate the computation of mean flops consumption per image.
 
     A method to activate the computation of mean flops consumption per image.
-    which will be available after `add_flops_counting_methods()` is called on
-    a desired net object. It should be called before running the network.
+    which will be available after `add_flops_counting_methods()` is called on a
+    desired net object. It should be called before running the network.
     """
     add_batch_counter_hook_function(self)
 
@@ -373,9 +374,9 @@ def start_flops_count(self):
 def stop_flops_count(self):
     """Stop computing the mean flops consumption per image.
 
-    A method to stop computing the mean flops consumption per image, which
-    will be available after `add_flops_counting_methods()` is called on a
-    desired net object. It can be called to pause the computation whenever.
+    A method to stop computing the mean flops consumption per image, which will
+    be available after `add_flops_counting_methods()` is called on a desired
+    net object. It can be called to pause the computation whenever.
     """
     remove_batch_counter_hook_function(self)
     self.apply(remove_flops_counter_hook_function)
@@ -384,8 +385,8 @@ def stop_flops_count(self):
 def reset_flops_count(self):
     """Reset statistics computed so far.
 
-    A method to Reset computed statistics, which will be available
-    after `add_flops_counting_methods()` is called on a desired net object.
+    A method to Reset computed statistics, which will be available after
+    `add_flops_counting_methods()` is called on a desired net object.
     """
     add_batch_counter_variables_or_reset(self)
     self.apply(add_flops_counter_variable_or_reset)

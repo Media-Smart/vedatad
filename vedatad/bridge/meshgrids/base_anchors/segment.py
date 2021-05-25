@@ -18,8 +18,8 @@ class SegmentBaseAnchor:
                  center_offset=0.):
         """Generate base anchors.
 
-            list(torch.Tensor): Base anchors of a feature grid in multiple
-                feature levels.
+        list(torch.Tensor): Base anchors of a feature grid in multiple
+            feature levels.
         """
         if center_offset != 0:
             assert centers is None, (

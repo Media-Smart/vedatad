@@ -1,9 +1,11 @@
 import functools
+
 import torch.nn.functional as F
 
 
 def reduce_loss(loss, reduction):
     """Reduce loss as specified.
+
     Args:
         loss (Tensor): Elementwise loss tensor.
         reduction (str): Options are "none", "mean" and "sum".
@@ -22,6 +24,7 @@ def reduce_loss(loss, reduction):
 
 def weight_reduce_loss(loss, weight=None, reduction='mean', avg_factor=None):
     """Apply element-wise weight and reduce loss.
+
     Args:
         loss (Tensor): Element-wise loss.
         weight (Tensor): Element-wise weights.

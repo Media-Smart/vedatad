@@ -257,6 +257,7 @@ class CosineAnnealingLrSchedulerHook(LrSchedulerHook):
 @registry.register_module('hook')
 class CosineRestartLrSchedulerHook(LrSchedulerHook):
     """Cosine annealing with restarts learning rate scheme.
+
     Args:
         periods (list[int]): Periods for each cosine anneling cycle.
         restart_weights (list[float], optional): Restart weights at each
@@ -308,6 +309,7 @@ class CosineRestartLrSchedulerHook(LrSchedulerHook):
 
 def get_position_from_periods(iteration, cumulative_periods):
     """Get the position from a period list.
+
     It will return the index of the right-closest number in the period list.
     For example, the cumulative_periods = [100, 200, 300, 400],
     if iteration == 50, return 0;
@@ -329,6 +331,7 @@ def get_position_from_periods(iteration, cumulative_periods):
 @registry.register_module('hook')
 class CyclicLrSchedulerHook(LrSchedulerHook):
     """Cyclic LR Scheduler.
+
     Implement the cyclical learning rate policy (CLR) described in
     https://arxiv.org/pdf/1506.01186.pdf
     Different from the original paper, we use cosine anealing rather than
@@ -399,6 +402,7 @@ class CyclicLrSchedulerHook(LrSchedulerHook):
 
 def annealing_cos(start, end, factor, weight=1):
     """Calculate annealing cos learning rate.
+
     Cosine anneal from `weight * start + (1 - weight) * end` to `end` as
     percentage goes from 0.0 to 1.0.
     Args:

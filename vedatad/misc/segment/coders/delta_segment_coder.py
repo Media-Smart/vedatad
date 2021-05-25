@@ -1,6 +1,5 @@
 # adapted from https://github.com/open-mmlab/mmcv or
 # https://github.com/open-mmlab/mmdetection
-import numpy as np
 import torch
 
 from vedacore.misc import registry

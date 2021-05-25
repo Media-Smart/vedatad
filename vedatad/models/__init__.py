@@ -1,6 +1,6 @@
+from .backbones import ResNet3d
 from .builder import build_detector
 from .detectors import SingleStageDetector
-from .backbones import ResNet3d
 from .heads import AnchorHead, RetinaHead
 from .necks import FPN
 

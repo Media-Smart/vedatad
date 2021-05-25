@@ -1,7 +1,8 @@
 # adapted from https://github.com/open-mmlab/mmcv or
 # https://github.com/open-mmlab/mmdetection
-import torch
 from abc import ABCMeta, abstractmethod
+
+import torch
 
 from .sampling_result import SamplingResult
 
@@ -47,7 +48,8 @@ class BaseSampler(metaclass=ABCMeta):
             assign_result (:obj:`AssignResult`): Segment assigning results.
             segments (Tensor): Segments to be sampled from.
             gt_segments (Tensor): Ground truth segments.
-            gt_labels (Tensor, optional): Class labels of ground truth segments.
+            gt_labels (Tensor, optional): Class labels of ground truth
+                segments.
 
         Returns:
             :obj:`SamplingResult`: Sampling result.
@@ -63,7 +65,7 @@ class BaseSampler(metaclass=ABCMeta):
             >>> gt_labels = None
             >>> self = RandomSampler(num=32, pos_fraction=0.5, neg_pos_ub=-1,
             >>>                      add_gt_as_proposals=False)
-            >>> self = self.sample(assign_result, segments, gt_segments, gt_labels)
+            >>> self = self.sample(assign_result, segments, gt_segments, gt_labels) # noqa: E501
         """
         if len(segments.shape) < 2:
             segments = segments[None, :]

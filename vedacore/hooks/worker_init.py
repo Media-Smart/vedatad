@@ -4,8 +4,7 @@ from .base_hook import BaseHook
 
 @registry.register_module('hook')
 class WorkerInitHook(BaseHook):
-    """Worker init for training.
-    """
+    """Worker init for training."""
 
     def before_train_epoch(self, looper):
         worker_init_fn = looper.train_dataloader.worker_init_fn

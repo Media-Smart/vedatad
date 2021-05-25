@@ -264,6 +264,7 @@ def _lb_multiclass_nms(multi_segments,
 
 def distance2segment(points, distance, max_t=None):
     """Decode distance prediction to segment.
+
     Args:
         points (Tensor): Shape (n,), [center].
         distance (Tensor): Distance from the given point to 2
@@ -282,6 +283,7 @@ def distance2segment(points, distance, max_t=None):
 
 def segment2distance(points, segment, max_dis=None, eps=0.1):
     """Encode segment based on distances.
+
     Args:
         points (Tensor): Shape (n,), [center].
         segment (Tensor): Shape (n, 2), "start, end" format

@@ -1,6 +1,7 @@
 # Copyright (c) Open-MMLab. All rights reserved.
 import functools
 import os
+
 import torch
 import torch.distributed as dist
 import torch.multiprocessing as mp

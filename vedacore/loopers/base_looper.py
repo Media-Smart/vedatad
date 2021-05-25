@@ -1,6 +1,7 @@
 import os.path as osp
-import torch
 from abc import ABCMeta, abstractmethod
+
+import torch
 
 from vedacore.misc import (load_meta, load_optimizer, load_weights, save_meta,
                            save_optimizer, save_weights)
@@ -156,6 +157,7 @@ class BaseLooper(metaclass=ABCMeta):
                       save_meta_flag=True,
                       meta=None):
         """Save the checkpoint.
+
         Args:
             out_dir (str): The directory that checkpoints are saved.
             filename_tmpl (str, optional): The checkpoint filename template,
@@ -200,6 +202,7 @@ class BaseLooper(metaclass=ABCMeta):
 
     def current_lr(self):
         """Get current learning rates.
+
         Returns:
             list[float] | dict[str, list[float]]: Current learning rates of all
                 param groups. If the runner has a dict of optimizers, this

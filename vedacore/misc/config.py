@@ -4,10 +4,11 @@ import os.path as osp
 import shutil
 import sys
 import tempfile
-from addict import Dict
 from argparse import Action, ArgumentParser
 from collections import abc
 from importlib import import_module
+
+from addict import Dict
 from yapf.yapflib.yapf_api import FormatCode
 
 from .utils import check_file_exist
@@ -77,7 +78,6 @@ class Config:
         >>> cfg
         "Config [path: /home/kchen/projects/tests/data/config/a.py]: "
         "{'item1': [1, 2], 'item2': {'a': 0}, 'item3': True, 'item4': 'test'}"
-
     """
 
     @staticmethod
@@ -179,8 +179,7 @@ class Config:
 
     @staticmethod
     def auto_argparser(description=None):
-        """Generate argparser from config file automatically (experimental)
-        """
+        """Generate argparser from config file automatically (experimental)"""
         partial_parser = ArgumentParser(description=description)
         partial_parser.add_argument('config', help='config file path')
         cfg_file = partial_parser.parse_known_args()[0].config
@@ -355,7 +354,7 @@ class Config:
                 fileio.dump(cfg_dict, file)
 
     def merge_from_dict(self, options):
-        """Merge list into cfg_dict
+        """Merge list into cfg_dict.
 
         Merge the dict parsed by MultipleKVAction into this cfg.
 

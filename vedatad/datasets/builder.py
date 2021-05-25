@@ -1,10 +1,11 @@
 # adapted from https://github.com/open-mmlab/mmcv or
 # https://github.com/open-mmlab/mmdetection
 import copy
-import numpy as np
 import platform
 import random
 from functools import partial
+
+import numpy as np
 from torch.utils.data import DataLoader
 
 from vedacore.misc import build_from_cfg, registry

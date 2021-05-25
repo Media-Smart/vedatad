@@ -1,6 +1,7 @@
+from collections.abc import Sequence
+
 import numpy as np
 import torch
-from collections.abc import Sequence
 
 from vedacore.misc import is_str, registry
 from vedacore.parallel import DataContainer as DC

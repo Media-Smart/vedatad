@@ -6,6 +6,7 @@ from .base_hook import BaseHook
 @registry.register_module('hook')
 class DistSamplerSeedHook(BaseHook):
     """Data-loading sampler for distributed training.
+
     When distributed training, it is only useful in conjunction with
     :obj:`EpochBasedRunner`, while :obj:`IterBasedRunner` achieves the same
     purpose with :obj:`IterLoader`.

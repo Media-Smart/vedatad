@@ -1,16 +1,17 @@
 import os
 import os.path as osp
 import pkgutil
-import torch
-import torchvision
 from collections import OrderedDict
 from importlib import import_module
+
+import torch
+import torchvision
+import yaml
 from torch.optim import Optimizer
 from torch.utils import model_zoo
 
 from ..parallel import get_dist_info, is_module_wrapper
 from .utils import mkdir_or_exist
-from .model_zoo import open_mmlab_urls
 
 
 # adapted from https://github.com/open-mmlab/mmcv
@@ -26,10 +27,19 @@ def get_torchvision_models():
     return model_urls
 
 
+def get_open_mmlab_models():
+    current_dir = os.path.dirname(__file__)
+    file_path = os.path.join(current_dir, '..', 'model_zoo', 'open_mmlab.yaml')
+
+    model_urls = yaml.load(open(file_path))
+
+    return model_urls
+
+
 # adapted from https://github.com/open-mmlab/mmcv
 def load_url_dist(url, model_dir=None):
-    """ In distributed setting, this function only download checkpoint at
-    local rank 0 """
+    """In distributed setting, this function only download checkpoint at local
+    rank 0."""
     rank, world_size = get_dist_info()
     rank = int(os.environ.get('LOCAL_RANK', rank))
     if rank == 0:
@@ -130,8 +140,9 @@ def _load_checkpoint(filepath, map_location=None):
         model_name = filepath[14:]
         checkpoint = load_url_dist(model_urls[model_name])
     elif filepath.startswith('open-mmlab://'):
+        model_urls = get_open_mmlab_models()
         model_name = filepath[13:]
-        checkpoint = load_url_dist(open_mmlab_urls[model_name])
+        checkpoint = load_url_dist(model_urls[model_name])
         checkpoint = checkpoint['state_dict']
     elif filepath.startswith(('http://', 'https://')):
         checkpoint = load_url_dist(filepath)

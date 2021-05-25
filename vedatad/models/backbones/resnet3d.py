@@ -2,17 +2,19 @@
 # https://github.com/open-mmlab/mmaction2
 import torch.nn as nn
 import torch.utils.checkpoint as cp
-from torch.nn.modules.utils import _ntuple, _triple
 from torch.nn.modules.batchnorm import _BatchNorm
 from torch.nn.modules.conv import _ConvNd
+from torch.nn.modules.utils import _ntuple, _triple
 
-from vedacore.modules import (ConvModule, constant_init, kaiming_init,
-                              build_enhance_module, build_activation_layer)
 from vedacore.misc import registry
+from vedacore.modules import (ConvModule, build_activation_layer,
+                              build_enhance_module, constant_init,
+                              kaiming_init)
 
 
 class BasicBlock3d(nn.Module):
     """BasicBlock 3d block for ResNet3D.
+
     Args:
         inplanes (int): Number of channels for the input in first conv3d layer.
         planes (int): Number of channels produced by some norm/conv3d layers.
@@ -150,6 +152,7 @@ class BasicBlock3d(nn.Module):
 
 class Bottleneck3d(nn.Module):
     """Bottleneck 3d block for ResNet3D.
+
     Args:
         inplanes (int): Number of channels for the input in first conv3d layer.
         planes (int): Number of channels produced by some norm/conv3d layers.
@@ -313,6 +316,7 @@ class Bottleneck3d(nn.Module):
 @registry.register_module('backbone')
 class ResNet3d(nn.Module):
     """ResNet 3d backbone.
+
     Args:
         depth (int): Depth of resnet, from {18, 34, 50, 101, 152}.
         in_channels (int): Channel num of input features. Default: 3.
@@ -488,6 +492,7 @@ class ResNet3d(nn.Module):
                        with_cp=False,
                        **kwargs):
         """Build residual layer for ResNet3D.
+
         Args:
             block (nn.Module): Residual module to be built.
             inplanes (int): Number of channels for the input feature
@@ -525,8 +530,8 @@ class ResNet3d(nn.Module):
         """
         inflate = inflate if not isinstance(inflate,
                                             int) else (inflate, ) * blocks
-        enhance = enhance if not isinstance(
-            enhance, int) else (enhance, ) * blocks
+        enhance = enhance if not isinstance(enhance,
+                                            int) else (enhance, ) * blocks
         assert len(inflate) == blocks and len(enhance) == blocks
         downsample = None
         if spatial_stride != 1 or inplanes != planes * block.expansion:
@@ -615,8 +620,7 @@ class ResNet3d(nn.Module):
                 param.requires_grad = False
 
     def init_weights(self):
-        """Initiate the parameters in backbone
-        """
+        """Initiate the parameters in backbone."""
         for m in self.modules():
             if isinstance(m, _ConvNd):
                 kaiming_init(m)
@@ -632,6 +636,7 @@ class ResNet3d(nn.Module):
 
     def forward(self, x):
         """Defines the computation performed at every call.
+
         Args:
             x (torch.Tensor): The input data.
         Returns:

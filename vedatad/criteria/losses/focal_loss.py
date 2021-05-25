@@ -16,6 +16,7 @@ def py_sigmoid_focal_loss(pred,
                           reduction='mean',
                           avg_factor=None):
     """PyTorch version of `Focal Loss <https://arxiv.org/abs/1708.02002>`_.
+
     Args:
         pred (torch.Tensor): The prediction with shape (N, C), C is the
             number of classes
@@ -122,6 +123,7 @@ class FocalLoss(nn.Module):
                 avg_factor=None,
                 reduction_override=None):
         """Forward function.
+
         Args:
             pred (torch.Tensor): The prediction.
             target (torch.Tensor): The learning label of the prediction.

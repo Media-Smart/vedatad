@@ -6,6 +6,7 @@ from vedacore.misc import registry
 @registry.register_module('activation')
 class HSwish(nn.Module):
     """Hard Swish Module. Apply the hard swish function:
+
     Hswish(x) = x * ReLU6(x + 3) / 6
 
     Args:

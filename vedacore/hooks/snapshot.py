@@ -9,6 +9,7 @@ from .base_hook import BaseHook
 @registry.register_module('hook')
 class SnapshotHook(BaseHook):
     """Save checkpoints periodically.
+
     Args:
         interval (int): The saving period. If ``by_epoch=True``, interval
             indicates epochs, otherwise it indicates iterations.

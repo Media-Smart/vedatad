@@ -6,9 +6,8 @@ from abc import ABCMeta, abstractmethod
 class BaseStorageBackend(metaclass=ABCMeta):
     """Abstract class of storage backends.
 
-    All backends need to implement two apis: `get()` and `get_text()`.
-    `get()` reads the file as a byte stream and `get_text()` reads the file
-    as texts.
+    All backends need to implement two apis: `get()` and `get_text()`. `get()`
+    reads the file as a byte stream and `get_text()` reads the file as texts.
     """
 
     @abstractmethod

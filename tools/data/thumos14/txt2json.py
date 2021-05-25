@@ -1,7 +1,7 @@
-import os
 import argparse
-import json
 import glob
+import json
+import os
 from collections import OrderedDict
 
 import cv2

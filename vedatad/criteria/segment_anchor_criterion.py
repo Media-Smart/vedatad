@@ -3,8 +3,8 @@ import torch
 from vedacore.misc import multi_apply, registry, unmap
 from vedatad.bridge import build_meshgrid
 from vedatad.misc.anchor import anchor_inside_flags, videos_to_levels
-from vedatad.misc.segment import (build_assigner, build_segment_coder,
-                                  build_sampler)
+from vedatad.misc.segment import (build_assigner, build_sampler,
+                                  build_segment_coder)
 from .base_criterion import BaseCriterion
 from .losses import build_loss
 
@@ -221,7 +221,8 @@ class SegmentAnchorCriterion(BaseCriterion):
                 label_weights_list (list[Tensor]): Label weights of each level
                 segment_targets_list (list[Tensor]): Segment targets of each
                     level
-                segment_weights_list (list[Tensor]): Segment weights of each level
+                segment_weights_list (list[Tensor]): Segment weights of each
+                    level.
                 num_total_pos (int): Number of positive samples in all videos
                 num_total_neg (int): Number of negative samples in all videos
             additional_returns: This function enables user-defined returns from

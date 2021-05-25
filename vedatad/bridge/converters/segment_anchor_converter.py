@@ -29,8 +29,8 @@ class SegmentAnchorConverter(BaseConverter):
                 tsize, tshift, etc.
             cls_scores (list[Tensor]): Segment scores for each scale level
                 Has shape (N, num_anchors * num_classes, T)
-            segment_preds (list[Tensor]): Segment energies / deltas for each scale
-                level with shape (N, num_anchors * 2, T)
+            segment_preds (list[Tensor]): Segment energies / deltas for each
+                scale level with shape (N, num_anchors * 2, T)
 
         Returns:
             list[tuple[Tensor, Tensor, Tensor]]: Each item in result_list is

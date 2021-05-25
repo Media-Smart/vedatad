@@ -1,5 +1,5 @@
-import os.path as osp
 import glob
+import os.path as osp
 
 import numpy as np
 
@@ -11,8 +11,7 @@ from .custom import CustomDataset
 
 @registry.register_module('dataset')
 class Thumos14Dataset(CustomDataset):
-    """Thumos14 dataset for temporal action detection.
-    """
+    """Thumos14 dataset for temporal action detection."""
 
     CLASSES = ('BaseballPitch', 'BasketballDunk', 'Billiards', 'CleanAndJerk',
                'CliffDiving', 'CricketBowling', 'CricketShot', 'Diving',

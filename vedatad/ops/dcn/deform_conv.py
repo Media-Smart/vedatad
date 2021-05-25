@@ -1,6 +1,7 @@
 # adapted from https://github.com/open-mmlab/mmcv or
 # https://github.com/open-mmlab/mmdetection
 import math
+
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -380,7 +381,8 @@ class ModulatedDeformConv(nn.Module):
 
 
 class ModulatedDeformConvPack(ModulatedDeformConv):
-    """A ModulatedDeformable Conv Encapsulation that acts as normal Conv layers.
+    """A ModulatedDeformable Conv Encapsulation that acts as normal Conv
+    layers.
 
     Args:
         in_channels (int): Same as nn.Conv2d.

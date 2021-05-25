@@ -1,7 +1,8 @@
-import torch
-import torch.distributed as dist
 from abc import ABCMeta, abstractmethod
 from collections import OrderedDict
+
+import torch
+import torch.distributed as dist
 
 
 class BaseCriterion(metaclass=ABCMeta):

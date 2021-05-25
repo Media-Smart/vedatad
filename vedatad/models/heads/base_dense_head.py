@@ -1,7 +1,8 @@
 # adapted from https://github.com/open-mmlab/mmcv or
 # https://github.com/open-mmlab/mmdetection
-import torch.nn as nn
 from abc import ABCMeta
+
+import torch.nn as nn
 
 
 class BaseDenseHead(nn.Module, metaclass=ABCMeta):

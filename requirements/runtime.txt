@@ -1,7 +1,7 @@
 addict
-terminaltables
-opencv-python
-torchvision>=0.7.0
-pyyaml
-yapf
 imagecorruptions
+opencv-python
+pyyaml
+terminaltables
+torchvision>=0.7.0
+yapf

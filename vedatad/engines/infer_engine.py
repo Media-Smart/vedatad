@@ -2,7 +2,7 @@ import torch
 
 from vedacore.misc import registry
 from vedatad.bridge import build_converter, build_meshgrid
-from vedatad.misc.segment import segment2result, multiclass_nms
+from vedatad.misc.segment import multiclass_nms, segment2result
 from .base_engine import BaseEngine
 
 

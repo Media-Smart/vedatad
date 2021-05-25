@@ -11,6 +11,7 @@ from .utils import weighted_loss
 @weighted_loss
 def iou_loss(pred, target, eps=1e-6):
     """IoU loss.
+
     Computing the IoU loss between a set of predicted segments and target
         segments.
     The loss is calculated as negative log of IoU.
@@ -29,9 +30,9 @@ def iou_loss(pred, target, eps=1e-6):
 
 @weighted_loss
 def bounded_iou_loss(pred, target, beta=0.2, eps=1e-3):
-    """BIoULoss.
-    This is an implementation of paper
-    `Improving Object Localization with Fitness NMS and Bounded IoU Loss.
+    """BIoULoss. This is an implementation of paper `Improving Object
+    Localization with Fitness NMS and Bounded IoU Loss.
+
     <https://arxiv.org/abs/1711.00164>`_.
     Args:
         pred (torch.Tensor): Predicted segments.
@@ -142,6 +143,7 @@ def diou_loss(pred, target, eps=1e-7):
 @registry.register_module('loss')
 class IoULoss(nn.Module):
     """IoULoss.
+
     Computing the IoU loss between a set of predicted segments and target
     segments.
     Args:
@@ -164,6 +166,7 @@ class IoULoss(nn.Module):
                 reduction_override=None,
                 **kwargs):
         """Forward function.
+
         Args:
             pred (torch.Tensor): The prediction.
             target (torch.Tensor): The learning target of the prediction.

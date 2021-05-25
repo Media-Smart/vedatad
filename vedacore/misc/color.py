@@ -1,12 +1,14 @@
 # Copyright (c) Open-MMLab. All rights reserved.
-import numpy as np
 from enum import Enum
+
+import numpy as np
 
 from .utils import is_str
 
 
 class Color(Enum):
     """An enum that defines common colors.
+
     Contains red, green, blue, cyan, yellow, magenta, white and black.
     """
     red = (0, 0, 255)
@@ -21,6 +23,7 @@ class Color(Enum):
 
 def color_val(color):
     """Convert various input to color tuples.
+
     Args:
         color (:obj:`Color`/str/tuple/int/ndarray): Color inputs
     Returns:

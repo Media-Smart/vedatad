@@ -1,6 +1,7 @@
 # adapted from https://github.com/open-mmlab/mmdetection
-import numpy as np
 from concurrent.futures import ThreadPoolExecutor
+
+import numpy as np
 from terminaltables import AsciiTable
 
 from vedacore.misc import print_log

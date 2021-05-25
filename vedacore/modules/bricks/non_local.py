@@ -1,6 +1,7 @@
+from abc import ABCMeta
+
 import torch
 import torch.nn as nn
-from abc import ABCMeta
 
 from vedacore.misc import registry
 from ..utils import constant_init, normal_init

@@ -14,7 +14,7 @@ class SamplingResult(NiceRepr):
         >>> print(f'self = {self}')
         self = <SamplingResult({
             'neg_segments': torch.Size([12, 2]),
-            'neg_inds': tensor([ 0,  1,  2,  4,  5,  6,  7,  8,  9, 10, 11, 12]),
+            'neg_inds': tensor([ 0,  1,  2,  4,  5,  6,  7,  8,  9, 10, 11, 12]), # noqa: E501
             'num_gts': 4,
             'pos_assigned_gt_inds': tensor([], dtype=torch.int64),
             'pos_segments': torch.Size([0, 2]),
