@@ -3,7 +3,7 @@
 import numpy as np
 import torch
 
-from vedatad.ops import batched_nms
+from vedacore.ops import batched_nms
 
 
 def segment_overlaps(segments1,

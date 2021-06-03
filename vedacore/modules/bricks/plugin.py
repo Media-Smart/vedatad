@@ -1,6 +1,6 @@
 # adapted from https://github.com/open-mmlab/mmcv or
 # https://github.com/open-mmlab/mmdetection
-from vedacore.modules import ConvModule
+from .conv_module import ConvModule
 
 plugin_cfg = {
     # format: layer_type: (abbreviation, module)

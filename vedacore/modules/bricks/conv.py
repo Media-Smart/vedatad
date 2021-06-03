@@ -1,6 +1,6 @@
 from torch import nn
 
-from vedatad.ops import DeformConvPack, ModulatedDeformConvPack
+from vedacore.ops import DeformConvPack, ModulatedDeformConvPack
 
 CONV_LAYERS = {
     'Conv1d': nn.Conv1d,

@@ -4,7 +4,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 from vedacore.misc import registry
-from vedatad.ops import sigmoid_focal_loss as _sigmoid_focal_loss
+from vedacore.ops import sigmoid_focal_loss as _sigmoid_focal_loss
 from .utils import weight_reduce_loss
 
 

@@ -128,7 +128,7 @@ if __name__ == '__main__':
         ],
         keywords='computer vision, single stage, temporal action detection',
         packages=find_packages(include=('vedacore', 'vedatad')),
-        package_data={'vedatad.ops': ['*/*.so']},
+        package_data={'vedacore.ops': ['*/*.so']},
         setup_requires=parse_requirements('requirements/build.txt'),
         # tests_require=parse_requirements('requirements.txt'),
         install_requires=parse_requirements('requirements/runtime.txt'),
@@ -138,19 +138,19 @@ if __name__ == '__main__':
         ext_modules=[
             make_cuda_ext(
                 name='nms_ext',
-                module='vedatad.ops.nms',
+                module='vedacore.ops.nms',
                 sources=['src/nms_ext.cpp', 'src/cpu/nms_cpu.cpp'],
                 sources_cuda=[
                     'src/cuda/nms_cuda.cpp', 'src/cuda/nms_kernel.cu'
                 ]),
             make_cuda_ext(
                 name='sigmoid_focal_loss_ext',
-                module='vedatad.ops.sigmoid_focal_loss',
+                module='vedacore.ops.sigmoid_focal_loss',
                 sources=['src/sigmoid_focal_loss_ext.cpp'],
                 sources_cuda=['src/cuda/sigmoid_focal_loss_cuda.cu']),
             make_cuda_ext(
                 name='deform_conv_ext',
-                module='vedatad.ops.dcn',
+                module='vedacore.ops.dcn',
                 sources=['src/deform_conv_ext.cpp'],
                 sources_cuda=[
                     'src/cuda/deform_conv_cuda.cpp',
@@ -158,7 +158,7 @@ if __name__ == '__main__':
                 ]),
             make_cuda_ext(
                 name='deform_pool_ext',
-                module='vedatad.ops.dcn',
+                module='vedacore.ops.dcn',
                 sources=['src/deform_pool_ext.cpp'],
                 sources_cuda=[
                     'src/cuda/deform_pool_cuda.cpp',
