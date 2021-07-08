@@ -120,6 +120,9 @@ def multiclass_nms(multi_segments,
         nms_cfg_['typename'] = nms_type[3:]
         return _lb_multiclass_nms(multi_segments, multi_scores, score_thr,
                                   nms_cfg_, max_num, score_factors)
+    elif nms_type == 'nmw':
+        return _multiclass_nmw(multi_segments, multi_scores, score_thr,
+                               nms_cfg_, max_num, score_factors)
     else:
         return _multiclass_nms(multi_segments, multi_scores, score_thr,
                                nms_cfg_, max_num, score_factors)
@@ -258,6 +261,100 @@ def _lb_multiclass_nms(multi_segments,
     if max_num > 0:
         dets = dets[:max_num]
         labels = labels[:max_num]
+
+    return dets, labels
+
+
+def _multiclass_nmw(multi_segments,
+                    multi_scores,
+                    score_thr,
+                    nms_cfg,
+                    max_num=-1,
+                    score_factors=None):
+    """Non-Maximum Weighting for multi-class segments.
+
+    Args:
+        multi_segments (Tensor): shape (n, #class*2) or (n, 2)
+        multi_scores (Tensor): shape (n, #class), where the last column
+            contains scores of the background class, but this will be ignored.
+        score_thr (float): segment threshold, segments with scores lower than
+            it will not be considered.
+        nms_cfg (dict): NMS cfg.
+        max_num (int): if there are more than max_num segments after NMS,
+            only top max_num will be kept.
+        score_factors (Tensor): The factors multiplied to scores before
+            applying NMS
+
+    Returns:
+        tuple: (segments, labels), tensors of shape (k, 3) and (k, 1). Labels
+            are 0-based.
+    """
+
+    def _nmw(segments, scores, labels, keep):
+        mask = labels[keep] == labels[keep][0]
+        segments = segments[keep][mask]
+        scores = scores[keep][mask]
+        labels = labels[keep][mask]
+
+        ious = segment_overlaps(segments[:1], segments, mode=mode)[0]
+        ious[0] = 1.0
+        iou_mask = ious >= iou_thr
+        accu_segments = segments[iou_mask]
+        accu_weights = scores[iou_mask] * ious[iou_mask]
+        accu_weights /= accu_weights.sum()
+        segment = (accu_weights[:, None] * accu_segments).sum(dim=0)
+        score = scores[0]
+        label = labels[0]
+
+        inds = torch.nonzero(mask)[:, 0]
+        mask[inds[~iou_mask]] = False
+        keep = keep[~mask]
+
+        return segment, score, label, keep
+
+    num_classes = multi_scores.size(1) - 1
+    # exclude background category
+    if multi_segments.shape[1] > 2:
+        segments = multi_segments.view(multi_scores.size(0), -1, 2)
+    else:
+        segments = multi_segments[:, None].expand(-1, num_classes, 2)
+    scores = multi_scores[:, :-1]
+
+    # filter out segments with low scores
+    if score_factors is not None:
+        scores = scores * score_factors[:, None]
+    valid_mask = scores > score_thr
+    segments = segments[valid_mask]
+    scores = scores[valid_mask]
+    labels = valid_mask.nonzero(as_tuple=False)[:, 1]
+
+    if segments.numel() == 0:
+        segments = multi_segments.new_zeros((0, 3))
+        labels = multi_segments.new_zeros((0, ), dtype=torch.long)
+        return segments, labels
+
+    keep = scores.argsort(descending=True)
+
+    mode = nms_cfg.get('mode', 'iou')
+    iou_thr = nms_cfg.get('iou_thr')
+
+    results = []
+    while keep.numel() > 0:
+        segment, score, label, keep = _nmw(segments, scores, labels, keep)
+        results.append([segment, score, label])
+        if max_num > 0 and len(results) == max_num:
+            break
+
+    if len(results) == 0:
+        segments = segments.new_zeros((0, 2))
+        scores = scores.new_zeros((0, ))
+        labels = labels.new_zeros((0, ))
+    else:
+        segments, scores, labels = list(zip(*results))
+        segments = torch.stack(segments)
+        scores = torch.stack(scores)
+        labels = torch.stack(labels)
+    dets = torch.cat([segments, scores[:, None]], dim=-1)
 
     return dets, labels
 

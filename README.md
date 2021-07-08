@@ -64,33 +64,33 @@ pip install -v -e .
 
 ## Data preparation
 
-Please follow specified algorithm in `config/trainval` to prepare data, for example, see detail in `configs/trainval/tinatad`.
+Please follow specified algorithm in `config/trainval` to prepare data, for example, see detail in `configs/trainval/daotad`.
 
 ## Train
 
 a. Config
 
-Modify some configuration accordingly in the config file like `configs/trainval/tinatad/tinatad.py`
+Modify some configuration accordingly in the config file like `configs/trainval/daotad/daotad_i3d_r50_e700_thumos14_rgb.py`
 
 b. Train
 ```shell
-tools/dist_trainval.sh configs/trainval/tinatad/tinatad.py "0,1"
+tools/dist_trainval.sh configs/trainval/daotad/daotad_i3d_r50_e700_thumos14_rgb.py 0,1,2,3
 ```
 
 ## Test
 
 a. Config
 
-Modify some configuration accordingly in the config file like `configs/trainval/tinatad/tinatad.py`
+Modify some configuration accordingly in the config file like `configs/trainval/daotad/daotad_i3d_r50_e700_thumos14_rgb.py`
 
 b. Test
 ```shell
-CUDA_VISIBLE_DEVICES="0" python tools/test.py configs/trainval/tinatad/tinatad.py weight_path
+CUDA_VISIBLE_DEVICES=0 python tools/test.py configs/trainval/daotad/daotad_i3d_r50_e700_thumos14_rgb.py weight_path
 ```
 
 ## Contact
 
-This repository is currently maintained by Hongxiang Cai ([@hxcai](http://github.com/hxcai)), Yichao Xiong ([@mileistone](https://github.com/mileistone)).
+This repository is currently maintained by Hongxiang Cai ([@hxcai](http://github.com/hxcai)), Yichao Xiong ([@mileistone](https://github.com/mileistone)), Chenhao Wang ([@C-H-Wong](https://github.com/C-H-Wong)).
 
 ## Credits
 We got a lot of code from [vedadet](https://github.com/Media-Smart/vedadet), thanks to [Media-Smart](https://github.com/Media-Smart).
