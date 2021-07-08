@@ -1,6 +1,6 @@
 # RGB Stream Is Enough for Temporal Action Detection
 ## Introduction
-An accurate yet efficient one-stage temporal action detector based on single RGB stream
+An accurate yet efficient one-stage temporal action detector based on single RGB stream.
 
 ![Architecture](https://github.com/Media-Smart/vedatad/blob/main/configs/trainval/daotad/img/Architecture.png)
 
@@ -10,7 +10,7 @@ An accurate yet efficient one-stage temporal action detector based on single RGB
 
 a. Download datasets & Create annotations
 
-Follow the [official instructions](https://github.com/Media-Smart/vedatad/tree/main/tools/data/thumos14) on vedatad
+Follow the [official instructions](https://github.com/Media-Smart/vedatad/tree/main/tools/data/thumos14) on vedatad.
 
 b. Extract frames
 
@@ -22,11 +22,11 @@ ${vedatad_root}/tools/data/extract_frames.sh videos/test frames/test -vf fps=25 
 
 ## Train
 
-Follow the [official instructions](https://github.com/Media-Smart/vedatad#train) on vedatad
+Follow the [official instructions](https://github.com/Media-Smart/vedatad#train) on vedatad.
 
 ## Test
 
-Follow the [official instructions](https://github.com/Media-Smart/vedatad#test) on vedatad
+Follow the [official instructions](https://github.com/Media-Smart/vedatad#test) on vedatad.
 
 ## Results and Weights
 ### THUMOS14
