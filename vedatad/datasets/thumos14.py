@@ -53,6 +53,14 @@ class Thumos14Dataset(CustomDataset):
                 label = ann['label']
                 segment = ann['segment']
 
+                if not self.test_mode:
+                    segment[0] = min(video_info['duration'],
+                                     max(0, segment[0]))
+                    segment[1] = min(video_info['duration'],
+                                     max(0, segment[1]))
+                    if segment[0] >= segment[1]:
+                        continue
+
                 if label == 'Ambiguous':
                     segments_ignore.append(segment)
                 elif label in self.CLASSES:

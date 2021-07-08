@@ -1,5 +1,5 @@
-from .cpn import CPN
 from .fpn import FPN
-from .pool import Pool
+from .srm import SRM
+from .tdm import TDM
 
-__all__ = ['FPN', 'CPN', 'Pool']
+__all__ = ['FPN', 'TDM', 'SRM']

@@ -8,7 +8,8 @@ from vedacore.modules import ConvModule, constant_init, kaiming_init
 
 
 @registry.register_module('neck')
-class CPN(nn.Module):
+class TDM(nn.Module):
+    """Temporal Down-Sampling Module."""
 
     def __init__(self,
                  in_channels,
@@ -22,7 +23,7 @@ class CPN(nn.Module):
                  norm_cfg=dict(typename='BN1d'),
                  act_cfg=dict(typename='ReLU'),
                  out_indices=(0, 1, 2, 3, 4)):
-        super(CPN, self).__init__()
+        super(TDM, self).__init__()
 
         self.in_channels = in_channels
         self.num_stages = len(stage_layers)
@@ -41,9 +42,9 @@ class CPN(nn.Module):
             self.strides) == len(self.paddings) == len(self.dilations) == len(
                 self.out_channels))
 
-        self.cp_layers = []
+        self.td_layers = []
         for i in range(self.num_stages):
-            cp_layer = self.make_cp_layer(self.stage_layers[i], in_channels,
+            td_layer = self.make_td_layer(self.stage_layers[i], in_channels,
                                           self.out_channels[i],
                                           self.kernel_sizes[i],
                                           self.strides[i], self.paddings[i],
@@ -51,11 +52,11 @@ class CPN(nn.Module):
                                           self.norm_cfg, self.act_cfg)
             in_channels = self.out_channels[i]
             layer_name = f'layer{i + 1}'
-            self.add_module(layer_name, cp_layer)
-            self.cp_layers.append(layer_name)
+            self.add_module(layer_name, td_layer)
+            self.td_layers.append(layer_name)
 
     @staticmethod
-    def make_cp_layer(num_layer, in_channels, out_channels, kernel_size,
+    def make_td_layer(num_layer, in_channels, out_channels, kernel_size,
                       stride, padding, dilation, conv_cfg, norm_cfg, act_cfg):
         layers = []
         layers.append(
@@ -89,12 +90,21 @@ class CPN(nn.Module):
             elif isinstance(m, _BatchNorm):
                 constant_init(m, 1)
 
+    def train(self, mode=True):
+        """Set the optimization status when training."""
+        super().train(mode)
+
+        if mode:
+            for m in self.modules():
+                if isinstance(m, _BatchNorm):
+                    m.eval()
+
     def forward(self, x):
         outs = []
         if 0 in self.out_indices:
             outs.append(x)
 
-        for i, layer_name in enumerate(self.cp_layers):
+        for i, layer_name in enumerate(self.td_layers):
             layer = getattr(self, layer_name)
             x = layer(x)
             if (i + 1) in self.out_indices:
