@@ -11,7 +11,7 @@ Vedatad is a single stage temporal action detection toolbox based on PyTorch. Ve
 
 - **Support of several popular single stage detector**
 
-  The toolbox supports several single stage detector out of the box, *e.g.* tinatad, etc.
+  The toolbox supports several single stage detector out of the box, *e.g.* DaoTAD, etc.
 
 ## License
 
