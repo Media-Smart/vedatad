@@ -1,5 +1,7 @@
 ## Introduction
-vedatad is a single stage temporal action detection toolbox based on PyTorch.
+Vedatad is a single stage temporal action detection toolbox based on PyTorch. Vedatad includes implementations of the following temporal action detection algorithms:
+
+* [DaoTAD](https://github.com/Media-Smart/vedatad/tree/main/configs/trainval/daotad)
 
 ## Features
 
