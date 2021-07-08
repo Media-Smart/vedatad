@@ -10,25 +10,26 @@ An accurate yet efficient one-stage temporal action detector based on single RGB
 
 a. Download datasets & Create annotations
 
-Follow the instructions on [vedatad](https://github.com/Media-Smart/vedatad/tools/data/thumos14/README.md)
+Follow the [official instructions](https://github.com/Media-Smart/vedatad/tree/main/tools/data/thumos14) on vedatad
 
 b. Extract frames
 
 ```bash
+cd ${vedatad_root}/data/thumos14
 ${vedatad_root}/tools/data/extract_frames.sh videos/val frames/val -vf fps=25 -s 128x128 %05d.jpg
 ${vedatad_root}/tools/data/extract_frames.sh videos/test frames/test -vf fps=25 -s 128x128 %05d.jpg
 ```
 
 ## Train
 
-Follow the official instructions on [vedatad](https://github.com/Media-Smart/vedatad#train)
+Follow the [official instructions](https://github.com/Media-Smart/vedatad#train) on vedatad
 
 ## Test
 
-Follow the official instructions on [vedatad](https://github.com/Media-Smart/vedatad#test)
+Follow the [official instructions](https://github.com/Media-Smart/vedatad#test) on vedatad
 
 ## Results and Weights
 ### THUMOS14
-|  Model |  Batch Size & GPU nums  | AP50 | Config | Download |
-|:------:|:-----------------------:|:----:|:------:|:--------:|
-| daotad_i3d_r50_e700_thumos14_rgb | 16 / 4 | 0.538 | [config](https://github.com/Media-Smart/vedatad/blob/main/configs/trainval/daotad/daotad_i3d_r50_e700_thumos14_rgb.py) | model weights on [Google Drive](https://drive.google.com/drive/folders/151ueiYJrkL4YtnUktVDQoJ4tir9WdvKB) |
+|  Model |  Batch Size | GPUs | AP50 | Config | Download |
+|:------:|:-----------------------:|:----:|:----:|:------:|:--------:|
+| daotad_i3d_r50_e700_thumos14_rgb | 16 | 4 | 0.538 | [config](https://github.com/Media-Smart/vedatad/blob/main/configs/trainval/daotad/daotad_i3d_r50_e700_thumos14_rgb.py) | model weights on [Google Drive](https://drive.google.com/drive/folders/151ueiYJrkL4YtnUktVDQoJ4tir9WdvKB) |
