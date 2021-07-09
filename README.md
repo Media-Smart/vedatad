@@ -76,7 +76,7 @@ Modify some configuration accordingly in the config file like `configs/trainval/
 
 b. Train
 ```shell
-tools/dist_trainval.sh configs/trainval/daotad/daotad_i3d_r50_e700_thumos14_rgb.py 0,1,2,3
+tools/dist_trainval.sh configs/trainval/daotad/daotad_i3d_r50_e700_thumos14_rgb.py "0,1,2,3"
 ```
 
 ## Test
