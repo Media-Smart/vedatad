@@ -1,6 +1,16 @@
 # RGB Stream Is Enough for Temporal Action Detection
 ## Introduction
 An accurate yet efficient one-stage temporal action detector based on single RGB stream.
+```
+@misc{wang2021rgb,
+      title={RGB Stream Is Enough for Temporal Action Detection}, 
+      author={Chenhao Wang and Hongxiang Cai and Yuxin Zou and Yichao Xiong},
+      year={2021},
+      eprint={2107.04362},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV}
+}
+```
 
 ![Architecture](https://github.com/Media-Smart/vedatad/blob/main/configs/trainval/daotad/img/Architecture.png)
 
