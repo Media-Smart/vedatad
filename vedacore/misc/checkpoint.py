@@ -31,7 +31,7 @@ def get_open_mmlab_models():
     current_dir = os.path.dirname(__file__)
     file_path = os.path.join(current_dir, '..', 'model_zoo', 'open_mmlab.yaml')
 
-    model_urls = yaml.load(open(file_path))
+    model_urls = yaml.safe_load(open(file_path))
 
     return model_urls
 
