@@ -66,6 +66,9 @@ def main():
     if args.out is not None and not args.out.endswith(('.pkl', '.pickle')):
         raise ValueError('The output file must be a pkl file.')
 
+    if args.out and args.evaluate:
+        raise ValueError('Choose either --out or --evaluate, not both.')
+
     engine, data_loader = prepare(cfg, args.checkpoint)
 
     results = None
