@@ -3,14 +3,16 @@ import os
 
 SOURCE_FOLDER = 'backup/*.txt'
 
-VAL_DIR = 'val/'
-TEST_DIR = 'test/'
+VAL_DIR = 'val'
+TEST_DIR = 'test'
 
 
 def write_out(filename, content, directory):
     if not os.path.exists(directory):
         os.makedirs(directory)
 
+    root, ext = os.path.splitext(filename)
+    filename = root + '_' + directory + ext
     full_path = os.path.join(directory, filename)
 
     with open(full_path, 'w') as f:

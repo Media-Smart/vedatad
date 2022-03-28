@@ -1,6 +1,4 @@
 from .base_looper import BaseLooper
-from tqdm import tqdm
-
 
 class EpochBasedLooper(BaseLooper):
 
@@ -13,7 +11,7 @@ class EpochBasedLooper(BaseLooper):
         self.mode = mode
         dataloader = self.dataloaders[mode]
         engine = self.engines[mode]
-        for idx, data in enumerate(tqdm(dataloader)): #<---- Some issue at this point in the code. 
+        for idx, data in enumerate(dataloader): 
             self.hook_pool.fire(f'before_{mode}_iter', self)
             self.cur_results[mode] = engine(data)
             if mode == BaseLooper.TRAIN:
