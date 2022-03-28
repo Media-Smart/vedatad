@@ -2,7 +2,7 @@ import argparse
 
 import torch
 
-from vedacore.fileio import dump
+from vedacore.fileio import dump, load
 from vedacore.misc import Config, DictAction, ProgressBar, load_weights
 from vedacore.parallel import MMDataParallel
 from vedatad.datasets import build_dataloader, build_dataset
@@ -13,6 +13,7 @@ def parse_args():
     parser = argparse.ArgumentParser(description='Test a detector')
     parser.add_argument('config', help='test config file path')
     parser.add_argument('checkpoint', help='checkpoint file')
+    parser.add_argument('--evaluate', type=str, help='evaluate existing result output file to evaluate')
     parser.add_argument('--out', help='output result file in pickle format')
     parser.add_argument(
         '--eval-options',
@@ -65,16 +66,27 @@ def main():
     if args.out is not None and not args.out.endswith(('.pkl', '.pickle')):
         raise ValueError('The output file must be a pkl file.')
 
+    if args.out and args.evaluate:
+        raise ValueError('Choose either --out or --evaluate, not both.')
+
     engine, data_loader = prepare(cfg, args.checkpoint)
 
-    results = test(engine, data_loader)
+    results = None
+    if args.evaluate:
+        print(f'evaluating existing results from {args.evaluate}.\nto test and evaluate new results, omit --existing')
+        output_file = open(args.evaluate, 'rb')
+        results = load(output_file, file_format='pkl')
+    else:
+        results = test(engine, data_loader)
 
-    if args.out:
-        print(f'\nwriting results to {args.out}')
-        dump(results, args.out)
+        if args.out:
+            print(f'\nwriting results to {args.out}')
+            dump(results, args.out)
 
     kwargs = dict() if args.eval_options is None else args.eval_options
     data_loader.dataset.evaluate(results, **kwargs)
+
+    if args.evaluate: output_file.close()
 
 
 if __name__ == '__main__':
