@@ -8,8 +8,8 @@ img_shape = (112, 112)
 overlap_ratio = 0.25
 
 data = dict(
-    samples_per_gpu=4,
-    workers_per_gpu=4,
+    samples_per_gpu=16,
+    workers_per_gpu=12,
     train=dict(
         typename=dataset_type,
         ann_file=data_root + 'annotations/val.json',
