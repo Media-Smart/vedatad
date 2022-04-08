@@ -9,6 +9,7 @@ import torchvision
 import yaml
 from torch.optim import Optimizer
 from torch.utils import model_zoo
+import pdb
 
 from ..parallel import get_dist_info, is_module_wrapper
 from .utils import mkdir_or_exist
@@ -281,6 +282,8 @@ def load_weights(model,
         state_dict = {k[7:]: v for k, v in state_dict.items()}
     if prefix is not None:
         state_dict = {'%s.%s' % (prefix, k): v for k, v in state_dict.items()}
+
+    pdb.set_trace()
     # load state_dict
     load_state_dict(model, state_dict, strict, logger)
 
