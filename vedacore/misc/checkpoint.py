@@ -9,7 +9,6 @@ import torchvision
 import yaml
 from torch.optim import Optimizer
 from torch.utils import model_zoo
-import pdb
 
 from ..parallel import get_dist_info, is_module_wrapper
 from .utils import mkdir_or_exist
