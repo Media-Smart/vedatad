@@ -286,7 +286,7 @@ def load_weights(model,
 
     pdb.set_trace()
     if exclude is not None:
-        for k in state_dict.keys():
+        for k in list(state_dict.keys()):
             if k.startswith(exclude):
                 del state_dict[k]
     pdb.set_trace()
