@@ -207,6 +207,8 @@ max_epochs = 1200
 # 6. checkpoint
 weights = dict(
     filepath='daotad_i3d_r50_e700_thumos14_rgb.pth', exclude=("head.retina_cls.", ))
+# Add any prefixes to "exclude" to not load them from the checkpoint before starting training.
+
 # optimizer = dict(filepath='epoch_900_optim.pth')
 # meta = dict(filepath='epoch_900_meta.pth')
 

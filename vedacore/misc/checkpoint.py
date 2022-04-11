@@ -273,6 +273,7 @@ def load_weights(model,
         strict (bool): Whether to allow different params for the model and
             checkpoint.
         logger (:mod:`logging.Logger` or None): The logger for error message.
+        exclude (tuple or None): Tuple of prefixes to remove from the checkpoint that is loaded.
 
     Returns:
         dict or OrderedDict: The loaded checkpoint.
