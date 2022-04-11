@@ -260,7 +260,8 @@ def load_weights(model,
                  map_location=None,
                  strict=False,
                  logger=None,
-                 prefix=None):
+                 prefix=None,
+                 exclude=None):
     """Load checkpoint from a file or URI.
 
     Args:
@@ -283,6 +284,11 @@ def load_weights(model,
     if prefix is not None:
         state_dict = {'%s.%s' % (prefix, k): v for k, v in state_dict.items()}
 
+    pdb.set_trace()
+    if exclude is not None:
+        for k in state_dict.keys():
+            if k.starts_with(exclude):
+                del state_dict[k]
     pdb.set_trace()
     # load state_dict
     load_state_dict(model, state_dict, strict, logger)
