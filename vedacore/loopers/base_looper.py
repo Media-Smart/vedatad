@@ -100,7 +100,8 @@ class BaseLooper(metaclass=ABCMeta):
                      filepath,
                      map_location='cpu',
                      strict=False,
-                     prefix=None):
+                     prefix=None,
+                     exclude=None):
         if torch.cuda.is_available():
             device_id = torch.cuda.current_device()
 
@@ -116,7 +117,7 @@ class BaseLooper(metaclass=ABCMeta):
                 engine = engine.module
             model = engine.model
             load_weights(model, filepath, map_location, strict, self.logger,
-                         prefix)
+                         prefix, exclude)
 
     def load_optimizer(self, filepath, map_location='cpu'):
         if torch.cuda.is_available():
