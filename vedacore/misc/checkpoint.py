@@ -31,7 +31,7 @@ def get_open_mmlab_models():
     current_dir = os.path.dirname(__file__)
     file_path = os.path.join(current_dir, '..', 'model_zoo', 'open_mmlab.yaml')
 
-    model_urls = yaml.load(open(file_path))
+    model_urls = yaml.safe_load(open(file_path))
 
     return model_urls
 
@@ -259,7 +259,8 @@ def load_weights(model,
                  map_location=None,
                  strict=False,
                  logger=None,
-                 prefix=None):
+                 prefix=None,
+                 exclude=None):
     """Load checkpoint from a file or URI.
 
     Args:
@@ -271,6 +272,7 @@ def load_weights(model,
         strict (bool): Whether to allow different params for the model and
             checkpoint.
         logger (:mod:`logging.Logger` or None): The logger for error message.
+        exclude (tuple or None): Tuple of prefixes to remove from the checkpoint that is loaded.
 
     Returns:
         dict or OrderedDict: The loaded checkpoint.
@@ -281,6 +283,12 @@ def load_weights(model,
         state_dict = {k[7:]: v for k, v in state_dict.items()}
     if prefix is not None:
         state_dict = {'%s.%s' % (prefix, k): v for k, v in state_dict.items()}
+
+    if exclude is not None:
+        for k in list(state_dict.keys()):
+            if k.startswith(exclude):
+                del state_dict[k]
+
     # load state_dict
     load_state_dict(model, state_dict, strict, logger)
 

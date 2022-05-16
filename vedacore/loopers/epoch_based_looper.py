@@ -1,6 +1,5 @@
 from .base_looper import BaseLooper
 
-
 class EpochBasedLooper(BaseLooper):
 
     def __init__(self, modes, dataloaders, engines, hook_pool, logger,
@@ -12,7 +11,7 @@ class EpochBasedLooper(BaseLooper):
         self.mode = mode
         dataloader = self.dataloaders[mode]
         engine = self.engines[mode]
-        for idx, data in enumerate(dataloader):
+        for idx, data in enumerate(dataloader): 
             self.hook_pool.fire(f'before_{mode}_iter', self)
             self.cur_results[mode] = engine(data)
             if mode == BaseLooper.TRAIN:
